@@ -1,0 +1,20 @@
+body {
+    text-align: center;
+}
+
+h1 {
+    margin: auto;
+}
+
+#timer {
+    font-size: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+}
+
+tr:nth-child(even) {
+    background: #f2f2f2;
+}
