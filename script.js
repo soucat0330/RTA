@@ -1,4 +1,49 @@
-window.addEventListener("load", () => {
+async function get_diff() {
+    const diff_url = "https://kenkoooo.com/atcoder/resources/problem-models.json";
+    try {
+        const res = await fetch(diff_url);
+        return await res.json();
+    } catch (e) {
+        console.error(e);
+        return {};
+    }
+}
+
+
+window.addEventListener("load", async () => {
+    const url = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=Kansu&from_second=1758105980";
+
+    const data = await get_diff();
+
+    fetch(url).then((res) => {
+        return res.json()
+    }).then((result) => {
+        let cnt = 1;
+        result.forEach((sub, i) => {
+            if (sub["result"] == "AC") {
+                const tr = document.createElement("tr");
+                const num = document.createElement("td");
+                num.innerText = 265 + cnt;
+                const name = document.createElement("td");
+                name.innerText = sub["problem_id"];
+                const diff = document.createElement("td");
+                diff.innerText = data[sub["problem_id"]]["difficulty"];
+
+
+                tr.appendChild(num);
+                tr.appendChild(name);
+                tr.appendChild(diff);
+
+                document.getElementById("table").appendChild(tr);
+                cnt++;
+            };
+        });
+    }).catch((e) => {
+        console.log(e) //エラー
+    });
+
+
+
     const start = new Date(2025, 8, 17, 19, 46, 20);
     setInterval(() => {
         const now = new Date();
