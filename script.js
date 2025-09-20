@@ -58,7 +58,7 @@ window.addEventListener("load", async () => {
         let diffcnt = 0;
         let wacnt = 0;
         let tlecnt = 0;
-        result.forEach((sub, i) => {
+        result.forEach((sub) => {
             if (sub["result"] == "AC") {
                 const tr = document.createElement("tr");
 
@@ -105,10 +105,14 @@ window.addEventListener("load", async () => {
         const tle_td = document.createElement("td");
         tle_td.innerText = `TLE数:${tlecnt}`;
         tle_td.colSpan = 5;
+        const last = document.createElement("td");
+        last.innerText = `のこり問題数:${cnt}`;
+        tle_td.colSpan = 5;
 
         add_td(table, diff_sum);
         add_td(table, wa_td);
         add_td(table, tle_td);
+        add_td(table, last);
     }).catch((e) => {
         console.log(e) //エラー
     });
