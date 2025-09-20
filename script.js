@@ -100,10 +100,10 @@ window.addEventListener("load", async () => {
         diff_sum.innerText = `diff合計:${diffcnt}`;
         diff_sum.colSpan = 5;
         const wa_td = document.createElement("td");
-        wa_td.innerText = wacnt;
+        wa_td.innerText = `WA数:${wacnt}`;
         wa_td.colSpan = 5;
         const tle_td = document.createElement("td");
-        tle_td.innerText = tlecnt;
+        tle_td.innerText = `TLE数:${tlecnt}`;
         tle_td.colSpan = 5;
 
         add_td(table, diff_sum);
