@@ -106,8 +106,8 @@ window.addEventListener("load", async () => {
         tle_td.innerText = `TLE数:${tlecnt}`;
         tle_td.colSpan = 5;
         const last = document.createElement("td");
-        last.innerText = `のこり問題数:${cnt}`;
-        tle_td.colSpan = 5;
+        last.innerText = `のこり問題数:${35 - cnt}`;
+        last.colSpan = 5;
 
         add_td(table, diff_sum);
         add_td(table, wa_td);
