@@ -29,6 +29,12 @@ function format_date(date) {
     return `${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
 }
 
+function add_td(table, td){
+    const tr = document.createElement("tr");
+    tr.appendChild(td);
+    table.appendChild(tr);
+}
+
 const start = new Date(2025, 8, 17, 19, 46, 20);
 
 window.addEventListener("load", async () => {
@@ -100,9 +106,9 @@ window.addEventListener("load", async () => {
         tle_td.innerText = tlecnt;
         tle_td.colSpan = 5;
 
-        table.appendChild(diff_sum);
-        table.appendChild(wa_td);
-        table.appendChild(tle_td);
+        add_td(table, diff_sum);
+        add_td(table, wa_td);
+        add_td(table, tle_td);
     }).catch((e) => {
         console.log(e) //エラー
     });
