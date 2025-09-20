@@ -50,7 +50,9 @@ window.addEventListener("load", async () => {
     }).then((result) => {
         let cnt = 1;
         let diffcnt = 0;
-        result.forEach((sub) => {
+        let wacnt = 0;
+        let tlecnt = 0;
+        result.forEach((sub, i) => {
             if (sub["result"] == "AC") {
                 const tr = document.createElement("tr");
 
@@ -85,13 +87,22 @@ window.addEventListener("load", async () => {
 
                 table.appendChild(tr);
                 cnt++;
-            };
+            } else if (sub["result"] == "WA") wacnt++;
+            else if (sub["result"] == "TLE") tlecnt++;
         });
         const diff_sum = document.createElement("td");
         diff_sum.innerText = `diff合計:${diffcnt}`;
         diff_sum.colSpan = 5;
+        const wa_td = document.createElement("td");
+        wa_td.innerText = wacnt;
+        wa_td.colSpan = 5;
+        const tle_td = document.createElement("td");
+        tle_td.innerText = tlecnt;
+        tle_td.colSpan = 5;
 
         table.appendChild(diff_sum);
+        table.appendChild(wa_td);
+        table.appendChild(tle_td);
     }).catch((e) => {
         console.log(e) //エラー
     });
