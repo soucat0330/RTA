@@ -46,9 +46,10 @@ window.addEventListener("load", async () => {
     table.appendChild(before_tr);
 
     fetch(url).then((res) => {
-        return res.json()
+        return res.json();
     }).then((result) => {
         let cnt = 1;
+        let diffcnt = 0;
         result.forEach((sub) => {
             if (sub["result"] == "AC") {
                 const tr = document.createElement("tr");
@@ -61,6 +62,7 @@ window.addEventListener("load", async () => {
 
                 const diff = document.createElement("td");
                 diff.innerText = data[sub["problem_id"]]["difficulty"];
+                diffcnt += data[sub["problem_id"]]["difficulty"];
 
                 const ac_time = document.createElement("td");
                 const ac_unix = Number(sub["epoch_second"]);
@@ -85,6 +87,11 @@ window.addEventListener("load", async () => {
                 cnt++;
             };
         });
+        const diff_sum = document.createElement("td");
+        diff_sum.innerText = `diff合計:${diffcnt}`;
+        diff_sum.colSpan = 5;
+
+        table.appendChild(diff_sum);
     }).catch((e) => {
         console.log(e) //エラー
     });
