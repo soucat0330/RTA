@@ -80,7 +80,6 @@ window.addEventListener("load", async () => {
 
         const diff_td = document.createElement("td");
         const diff = data[sub["problem_id"]]["difficulty"];
-        if (diff < 400) return;
         diff_td.innerText = diff;
         diffcnt += diff;
 
@@ -96,14 +95,16 @@ window.addEventListener("load", async () => {
         //   lap.innerText = `${cnt - 10}~${cnt}問のラップタイム:`;
         // }
 
-        tr.appendChild(num);
-        tr.appendChild(name);
-        tr.appendChild(diff_td);
-        tr.appendChild(ac_time);
-        tr.appendChild(past_time);
+        if (diff >= 400){
+          tr.appendChild(num);
+          tr.appendChild(name);
+          tr.appendChild(diff_td);
+          tr.appendChild(ac_time);
+          tr.appendChild(past_time);
 
-        table.appendChild(tr);
-        cnt++;
+          table.appendChild(tr);
+          cnt++;
+        }
       } else if (sub["result"] == "WA") wacnt++;
       else if (sub["result"] == "TLE") tlecnt++;
     });
