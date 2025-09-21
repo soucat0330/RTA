@@ -9,6 +9,10 @@ async function get_diff() {
   }
 }
 
+function set_digits(int) {
+  return String(int).padStart(2, "0");
+}
+
 function format_date(date) {
   const sec = 1000;
   const min = sec * 60;
@@ -18,24 +22,24 @@ function format_date(date) {
   const days = Math.floor(date / day);
   date %= day;
 
-  const hours = Math.floor(date / hour);
+  const hours = set_digits(Math.floor(date / hour));
   date %= hour;
 
-  const minutes = Math.floor(date / min);
+  const minutes = set_digits(Math.floor(date / min));
   date %= min;
 
-  const seconds = Math.floor(date / sec);
+  const seconds = set_digits(Math.floor(date / sec));
 
-  return `${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+  return `${days}d ${hours}:${minutes}:${seconds}`;
 }
 
 function unix_to_date(unix) {
   const date = new Date(unix * 1000);
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
+  const hours = set_digits(date.getHours());
+  const minutes = set_digits(date.getMinutes());
+  const seconds = set_digits(date.getSeconds());
   return `${month}/${day} ${hours}:${minutes}:${seconds}`;
 }
 
@@ -45,21 +49,23 @@ function add_td(table, td) {
   table.appendChild(tr);
 }
 
+function create_info(text, value) {
+  const div = document.createElement("div");
+  div.classList.add("text-center", "col-6", "col-md-3");
+  const d_text = document.createElement("h6");
+  d_text.innerText = text;
+  const d_value = document.createElement("div");
+  d_value.innerText = value;
+  d_value.classList.add("fs-4");
+  div.append(d_text, d_value);
+  return div;
+}
 const start = new Date(2025, 8, 17, 19, 46, 20);
 
 window.addEventListener("load", async () => {
   const url = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=Kansu&from_second=1758105980";
-
   const data = await get_diff();
-
-  const before_tr = document.createElement("tr");
-  before_tr.innerHTML = `
-        <td>265</td><td></td><td></td>
-        <td>スタート時点</td>
-        <td>0日0時間0分0秒</td>
-    `;
   const table = document.getElementById("table");
-  table.appendChild(before_tr);
 
   fetch(url).then((res) => {
     return res.json();
@@ -68,20 +74,22 @@ window.addEventListener("load", async () => {
     let diffcnt = 0;
     let wacnt = 0;
     let tlecnt = 0;
+    let temp_time = start;
     result.forEach((sub) => {
       if (sub["result"] == "AC") {
         const tr = document.createElement("tr");
 
         const num = document.createElement("td");
-        num.innerText = 265 + cnt;
+        num.innerText = cnt;
 
         const name = document.createElement("td");
         name.innerText = sub["problem_id"];
 
         const diff_td = document.createElement("td");
-        const diff = data[sub["problem_id"]]["difficulty"];
+        let diff;
+        if (data[sub["problem_id"]]) diff = data[sub["problem_id"]]["difficulty"];
+        else diff = 0;
         diff_td.innerText = diff;
-        diffcnt += diff;
 
         const ac_time = document.createElement("td");
         const ac_unix = Number(sub["epoch_second"]);
@@ -90,41 +98,33 @@ window.addEventListener("load", async () => {
         const past_time = document.createElement("td");
         past_time.innerText = format_date(new Date(ac_unix * 1000) - start);
 
-        // if (cnt % 10 == 0) {
-        //   const lap = document.createElement("td");
-        //   lap.innerText = `${cnt - 10}~${cnt}問のラップタイム:`;
-        // }
+        if (diff >= 400) {
+          diffcnt += diff;
 
-        if (diff >= 400){
-          tr.appendChild(num);
-          tr.appendChild(name);
-          tr.appendChild(diff_td);
-          tr.appendChild(ac_time);
-          tr.appendChild(past_time);
+          tr.append(num, name, diff_td, ac_time, past_time);
 
           table.appendChild(tr);
+
+          if (cnt % 10 == 0) {
+            const lap = document.createElement("td");
+            lap.innerText = `${cnt - 10}~${cnt}問のラップタイム:${format_date(new Date(ac_unix * 1000) - temp_time)}`;
+            lap.colSpan = 5;
+            lap.classList.add("fw-medium", "fs-5");
+            temp_time = new Date(ac_unix * 1000);
+            add_td(table, lap);
+          }
           cnt++;
         }
       } else if (sub["result"] == "WA") wacnt++;
       else if (sub["result"] == "TLE") tlecnt++;
     });
-    const diff_sum = document.createElement("td");
-    diff_sum.innerText = `diff合計:${diffcnt}`;
-    diff_sum.colSpan = 5;
-    const wa_td = document.createElement("td");
-    wa_td.innerText = `WA数:${wacnt}`;
-    wa_td.colSpan = 5;
-    const tle_td = document.createElement("td");
-    tle_td.innerText = `TLE数:${tlecnt}`;
-    tle_td.colSpan = 5;
-    const last = document.createElement("td");
-    last.innerText = `のこり問題数:${35 - cnt + 1}`;
-    last.colSpan = 5;
+    const info = document.getElementById("info");
 
-    add_td(table, diff_sum);
-    add_td(table, wa_td);
-    add_td(table, tle_td);
-    add_td(table, last);
+    const diff_sum = create_info("diff合計", diffcnt);
+    const wa_td = create_info("WA数", wacnt);
+    const tle_td = create_info("TLE数", tlecnt);
+    const last = create_info("のこり問題数", 35 - cnt + 1);
+    info.append(diff_sum, wa_td, tle_td, last);
   }).catch((e) => {
     console.log(e) //エラー
   });
