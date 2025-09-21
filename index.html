@@ -2,31 +2,40 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTA Timer</title>
-    <script src="script.js"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTA Timer</title>
+  <script src="script.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 
 <body>
-    <h1>Kansu CD35問 RTA</h1>
+  <div class="container">
+    <div class="row">
+      <div class="m-auto col-auto fs-1">Kansu CD35問 RTA</div>
+    </div>
+    <div class="row">
+      <div id="timer" class="m-auto col-auto fs-2"></div>
+    </div>
+    <div class="col-lg-8 col-md-11 mx-auto my-3">
+      <div id="info" class="row"></div>
+    </div>
 
-    <br>
-
-    <div id="timer"></div>
-
-    <br>
-
-    <table border="2" id="table">
-        <tr>
+    <div class="col-lg-8 col-md-11 mx-auto">
+      <table class="table table-striped table-bordered text-center">
+        <tbody id="table">
+          <tr>
             <th>AC数</th>
             <th>コンテスト名</th>
             <th>diff</th>
             <th>日時</th>
             <th>経過時間</th>
-        </tr>
-    </table>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 
 </html>
