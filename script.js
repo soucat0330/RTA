@@ -60,10 +60,10 @@ function create_info(text, value) {
   div.append(d_text, d_value);
   return div;
 }
-const start = new Date(2025, 8, 17, 19, 46, 20);
+const start = new Date(2025, 9, 4, 9, 0, 0);
 
 window.addEventListener("load", async () => {
-  const url = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=Kansu&from_second=1758105980";
+  const url = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=Shymohn&from_second=1759536000";
   const data = await get_diff();
   const table = document.getElementById("table");
 
